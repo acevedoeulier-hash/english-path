@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Path - Curso de Inglés</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-main);
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--bg-secondary);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        h1 { font-size: 22px; color: var(--accent); margin: 0; }
+        .user-pill { background: var(--bg-card); padding: 6px 12px; border-radius: 20px; font-size: 14px; color: var(--text-muted); }
+        
+        /* Estadísticas y Rachas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { font-size: 18px; font-weight: bold; color: var(--accent); }
+        .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        /* Selector de Niveles */
+        .levels-nav {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .level-btn {
+            background: var(--bg-card);
+            color: var(--text-muted);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .level-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* Tarjetas de Lecciones */
+        .section-title { font-size: 16px; color: var(--text-muted); margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .lesson-card {
+            background: var(--bg-card);
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lesson-card:hover { transform: translateX(4px); background: #3f4f67; }
+        .lesson-title { font-weight: 600; font-size: 15px; }
+        .lesson-status { font-size: 13px; color: var(--success); }
+
+        /* Calendario y Flashcards */
+        .card-action {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+        .card-action:hover { opacity: 0.9; }
+
+        .calendar-box {
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .cal-day { padding: 6px; background: #1e293b; border-radius: 4px; color: var(--text-muted); }
+        .cal-day.active { background: var(--success); color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>English Path</h1>
+            <div class="user-pill" id="user-display">Estudiante</div>
+        </header>
+
+        <!-- Estadísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">🔥 3</div>
+                <div class="stat-label">Días de racha</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">✔️ 25%</div>
+                <div class="stat-label">Completado</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">⚡ 12</div>
+                <div class="stat-label">Flashcards vistas</div>
+            </div>
+        </div>
+
+        <!-- Botón de Flashcards -->
+        <button class="card-action" onclick="alert('Abriendo módulo de Flashcards interactivas...')">🗂️ Repasar Flashcards del día</button>
+
+        <!-- Selector de Niveles -->
+        <div class="levels-nav" id="level-selector">
+            <button class="level-btn active" onclick="filterLevel('A1')">A1</button>
+            <button class="level-btn" onclick="filterLevel('A2')">A2</button>
+            <button class="level-btn" onclick="filterLevel('B1')">B1</button>
+            <button class="level-btn" onclick="filterLevel('B2')">B2</button>
+        </div>
+
+        <!-- Lista de Lecciones -->
+        <div id="lessons-container">
+            <div class="section-title">Nivel A1 - Fundamentos</div>
+            <div class="lesson-card" onclick="alert('Abriendo Lección 1...')">
+                <div>
+                    <div class="lesson-title">Lección 1: Saludos y presentaciones</div>
+                    <small style="color: var(--text-muted);">Vocabulario básico y verbos to be</small>
+                </div>
+                <div class="lesson-status">Completado</div>
+            </div>
+            <div class="lesson-card" onclick="alert('Abriendo Lección 2...')">
+                <div>
+                    <div class="lesson-title">Lección 2: Rutina diaria</div>
+                    <small style="color: var(--text-muted);">Presente simple y expresiones de tiempo</small>
+                </div>
+                <div class="lesson-status" style="color: var(--warning);">En progreso</div>
+            </div>
+            <div class="lesson-card" onclick="alert('Abriendo Lección 3...')">
+                <div>
+                    <div class="lesson-title">Lección 3: En la ciudad</div>
+                    <small style="color: var(--text-muted);">Direcciones, lugares y transporte</small>
+                </div>
+                <div class="lesson-status" style="color: var(--text-muted);">Pendiente</div>
+            </div>
+        </div>
+
+        <!-- Calendario de Actividad -->
+        <div class="calendar-box">
+            <strong>📅 Actividad de Noviembre 2026</strong>
+            <div class="calendar-grid">
+                <div class="cal-day">1</div>
+                <div class="cal-day active">2</div>
+                <div class="cal-day active">3</div>
+                <div class="cal-day active">4</div>
+                <div class="cal-day">5</div>
+                <div class="cal-day">6</div>
+                <div class="cal-day">7</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Preguntar nombre al iniciar si no está guardado
+        let userName = localStorage.getItem('englishPathUser');
+        if (!userName) {
+            userName = prompt("Ingresa tu nombre para comenzar:") || "Estudiante";
+            localStorage.setItem('englishPathUser', userName);
+        }
+        document.getElementById('user-display').innerText = userName;
+
+        function filterLevel(level) {
+            document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            // Aquí puedes expandir la lógica para cambiar las lecciones según el nivel seleccionado
+        }
+    </script>
+</body>
+</html>
